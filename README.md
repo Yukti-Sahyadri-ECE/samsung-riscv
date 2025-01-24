@@ -20,4 +20,9 @@ https://github.com/Yukti-Sahyadri-ECE/samsung-riscv/tree/main/Task2
  <details>
 <summary>TASK3:32 bit segment of objdump</summary>
 https://github.com/Yukti-Sahyadri-ECE/samsung-riscv/tree/main/Task3
-
+ </details>
+<details>
+<summary>TASK4:Functional simulation of given RISC-V core verilog netlist and testbench
+</summary>
+https://github.com/Yukti-Sahyadri-ECE/samsung-riscv/tree/main/Task4)](https://github.com/Yukti-Sahyadri-ECE/samsung-riscv/tree/main/Task4
+</details>
