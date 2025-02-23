@@ -1,0 +1,57 @@
+#include <ch32v00x.h>
+#include <debug.h>
+
+#define IR_SENSOR_PIN  GPIO_Pin_4  // IR Sensor Input (PD4)
+#define LED_PIN        GPIO_Pin_5  // LED Output (PD5)
+#define BUZZER_PIN     GPIO_Pin_6  // Buzzer Output (PD6)
+
+void GPIO_Config(void) {
+    GPIO_InitTypeDef GPIO_InitStructure = {0};
+
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE); // Enable Port D clock
+
+    // Configure PD4 as Input (IR Sensor)
+    GPIO_InitStructure.GPIO_Pin = IR_SENSOR_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; // Internal pull-up mode
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // Configure PD5 as Output (LED)
+    GPIO_InitStructure.GPIO_Pin = LED_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    // Configure PD6 as Output (Buzzer)
+    GPIO_InitStructure.GPIO_Pin = BUZZER_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+}
+
+void setup() {
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); // Set NVIC priority
+    SystemCoreClockUpdate(); // Update System Core Clock
+    Delay_Init(); // Initialize Delay
+    GPIO_Config(); // Initialize GPIO
+    GPIO_WriteBit(GPIOD, LED_PIN, Bit_RESET); // Ensure LED is OFF at start
+    GPIO_WriteBit(GPIOD, BUZZER_PIN, Bit_RESET); // Ensure Buzzer is OFF at start
+}
+
+void loop() {
+    static uint8_t motionDetected = 0; // Flag to track motion detection state
+
+    BitAction IR = GPIO_ReadInputDataBit(GPIOD, IR_SENSOR_PIN);
+
+    if (IR == Bit_RESET && motionDetected == 0) { // Motion detected for the first time
+        motionDetected = 1;  // Set flag so it doesn't keep triggering
+        GPIO_WriteBit(GPIOD, LED_PIN, Bit_SET); // Turn LED ON
+        GPIO_WriteBit(GPIOD, BUZZER_PIN, Bit_SET); // Turn Buzzer ON
+        Delay_Ms(1000); // Keep LED and Buzzer ON for 1 second
+        GPIO_WriteBit(GPIOD, LED_PIN, Bit_RESET); // Turn LED OFF
+        GPIO_WriteBit(GPIOD, BUZZER_PIN, Bit_RESET); // Turn Buzzer OFF
+
+        // Debounce: Ignore further motion detection for a short time
+        Delay_Ms(1000); 
+        motionDetected = 0;  // Reset flag after the debounce delay
+    }
+}
