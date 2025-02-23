@@ -26,3 +26,13 @@ https://github.com/Yukti-Sahyadri-ECE/samsung-riscv/tree/main/Task3
 </summary>
 https://github.com/Yukti-Sahyadri-ECE/samsung-riscv/tree/main/Task4
 </details>
+<details>
+<summary>TASK5:Motion-Activated Alarm System Circuit Diagram and Pin configuration and Blink LED test
+</summary>[
+https://github.com/Yukti-Sahyadri-ECE/samsung-riscv/tree/main/Task5
+</details>
+<details>
+<summary>TASK6:Motion-Activated Alarm System Code and Application Video
+</summary>
+https://github.com/Yukti-Sahyadri-ECE/samsung-riscv/tree/main/Task6
+</details>
